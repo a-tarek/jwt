@@ -1,0 +1,14 @@
+{
+    "name": "atarek/jwt",
+    "description": "A very simple jwt token based authentication",
+    "type": "library",
+    "require": {
+        "predis/predis": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "a-tarek",
+            "email": "a.tarek.elsayed@gmail.com"
+        }
+    ]
+}
