@@ -2,12 +2,15 @@
 
 namespace Atarek\Jwt\Core\Claims;
 
-use Atarek\Jwt\Core\Contracts\SubjectContract;
+use Atarek\Jwt\Core\Contracts\TokenSubject;
 
-class SubjectClaim 
+class SubjectClaim
 {
-    public static function load(SubjectContract $subject): array
+    public static function load(TokenSubject $subject): array
     {
-        return ['sub'=> $subject->getSubjectIdentifier()];
+        return [
+            'sub' => $subject->getIdentifier(),
+            'pvr'=> $subject->getProvider()
+        ];
     }
 }

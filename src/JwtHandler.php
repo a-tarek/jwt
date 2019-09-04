@@ -2,11 +2,12 @@
 
 namespace Atarek\Jwt;
 
-use Illuminate\Http\Request;
 use Atarek\Jwt\Core\Token;
 use Atarek\Jwt\Core\Courier;
+use Illuminate\Http\Request;
 use Atarek\Jwt\Core\StreamPipeline;
-use Atarek\Jwt\Core\Contracts\SubjectContract;
+use Illuminate\Support\Facades\Auth;
+use Atarek\Jwt\Core\Contracts\TokenSubject;
 use Atarek\Jwt\Core\Contracts\TokenBuilderDirectorContract;
 
 class JwtHandler
@@ -15,21 +16,24 @@ class JwtHandler
 
     protected $tokenBuilder;
 
-    public static function instance(): JwtHandler
-    {
-        return resolve(JwtHandler::class);
-    }
+    protected $guard;
+
     public function __construct(TokenBuilderDirectorContract $tokenBuilder)
     {
         $this->tokenBuilder = $tokenBuilder;
     }
 
-    public function makeAccessToken(SubjectContract $subject)
+    public static function instance(): JwtHandler
+    {
+        return resolve(JwtHandler::class);
+    }
+
+    public function makeAccessToken(TokenSubject $subject)
     {
         return $this->tokenBuilder->makeAccessToken($subject);
     }
 
-    public function makeRefreshToken(SubjectContract $subject)
+    public function makeRefreshToken(TokenSubject $subject)
     {
         return $this->tokenBuilder->makeRefreshToken($subject);
     }
