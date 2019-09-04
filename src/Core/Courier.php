@@ -2,10 +2,9 @@
 
 namespace Atarek\Jwt\Core;
 
-
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 
 class Courier
 {
@@ -48,12 +47,12 @@ class Courier
 
     public static function cacheRevokedToken($token, $ttl)
     {
-        return Redis::set($token, 1, 'EX', $ttl);
+        return Cache::put($token, 1, $ttl);
     }
 
     public static function isTokenRevoked($key)
     {
-        return Redis::get($key);
+        return Cache::get($key);
     }
 
 
@@ -69,7 +68,7 @@ class Courier
 
     public static function extractBearerToken(Request $request)
     {
-        return str_replace('Bearer ', '', $request->header('authorization'));
+        return \Request::bearerToken();
     }
 
 
@@ -109,7 +108,7 @@ class Courier
             throw new \Exception('env_key not configured');
         }
 
-        $secret = env($env_key);
+        $secret = env($env_key,1234);
         if ($secret === null) {
             throw new \Exception("$env_key not provided or is null");
         }
