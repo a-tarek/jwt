@@ -115,6 +115,15 @@ The default ```Atarek\Jwt\Controllers\AuthController::class``` contains four met
 
 ```reoute_prefix/refresh, @refresh``` Returns a new access token, you can only refresh with a refresh token
 
+#### Middlewares
+Add the ```has.access``` middleware to authenticate incoming requests 
+```
+Route::get('do-something','ThingsController@doSomthing')->middleware('has.access');
+```
+#### User
+The user then can be accessed from the Auth Facade
+``` $user = Auth::user(); ```
+
 #### Extending AuthController
 You can extend the default ``` Atarek\Jwt\Controllers\AuthController::class``` and add additional logic before returning the response
 ```
@@ -141,7 +150,6 @@ class UserController extends AuthController
 }
 
 ```
-
 
 
 
