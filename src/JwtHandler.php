@@ -63,7 +63,7 @@ class JwtHandler
     {
         (new StreamPipeline)->send($request)->through($pipe)->then(function (Token $token) {
             $this->token = $token;
-            Auth::guard()->setProvider($token->getClaim('pvr'));
+            auth('api')->setProvider($token->getClaim('pvr'));
             auth('api')->setUserByUserId($token->getClaim('sub'));
         });
     }
