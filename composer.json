@@ -2,6 +2,7 @@
     "name": "atarek/jwt",
     "description": "Jwt token authentication based on the laravel framework",
     "type": "library",
+    "license": "MIT",
     "require": {
     },
     "autoload": {
