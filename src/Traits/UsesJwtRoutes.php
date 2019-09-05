@@ -4,39 +4,51 @@ namespace Atarek\Jwt\Traits;
 
 use Illuminate\Http\Request;
 use Atarek\Jwt\JwtHandler;
-use App\Services\ResponseService;
 use Atarek\Jwt\Exceptions\TokenException;
 
 
 trait UsesJwtRoutes
 {
-    public function authenticate(Request $request)
+    public function authenticate(Request $request, $callBack = null)
     {
-        if (auth()->validate($request->all()) === false) {
+        if (auth('api')->validate($request->all()) === false) {
             throw new TokenException(TokenException::INVALID_CREDENTIALS, 'A_001');
-         };
-        $access  = JwtHandler::instance()->makeAccessToken(auth()->user());
-        $refresh = JwtHandler::instance()->makeRefreshToken(auth()->user());
+        };
+        $accessToken  = JwtHandler::instance()->makeAccessToken(auth('api')->user());
+        $refreshToken = JwtHandler::instance()->makeRefreshToken(auth('api')->user());
+        if (is_callable($callBack)) {
+            return call_user_func($callBack, $accessToken, $refreshToken);
+        }
         return response()->json([
-            'success'=>1,
-            'access' => $access,
-            'refresh' => $refresh
+            'success' => 1,
+            'access' => $accessToken,
+            'refresh' => $refreshToken
         ]);
     }
 
-    public function refresh()
+    public function refresh($callBack = null)
     {
-        return response()->json(["token" => JwtHandler::instance()->makeAccessToken(auth()->user())]);
+        $accessToken = JwtHandler::instance()->makeAccessToken(auth('api')->user());
+        if (is_callable($callBack)) {
+            return call_user_func($callBack, $accessToken);
+        }
+        return response()->json([
+            'success' => 1,
+            'access' => $accessToken
+        ]);
     }
 
     public function user()
     {
-        return response()->json(auth()->user());
+        return response()->json(auth('api')->user());
     }
 
-    public function revoke()
+    public function revoke($callBack = null)
     {
         JwtHandler::instance()->revoke();
+        if (is_callable($callBack)) {
+            return call_user_func($callBack);
+        }
         return response()->json(['success' => 1]);
     }
 }

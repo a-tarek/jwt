@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 interface TokenSubject extends Authenticatable
 {
-    public function addClaims($tokenType):Array;
+    public function addClaims($tokenType):array;
 
     public function getProvider():string;
 

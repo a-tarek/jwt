@@ -30,6 +30,12 @@ class TokenException extends Exception
         ['Authorization'=> 'The credentials given was invalid']
     ];
 
+    const INVALID_PROVIDER = [
+        'Invalid provider',
+        400,
+        ['Configuration'=> 'The provider configured is invalid']
+    ];
+
     public function __construct(array $response, $exceptionCode)
     {
         $response[2] = array_merge($response['2'],['exception_number'=>$exceptionCode]);  

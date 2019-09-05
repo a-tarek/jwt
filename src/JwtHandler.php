@@ -7,6 +7,7 @@ use Atarek\Jwt\Core\Courier;
 use Illuminate\Http\Request;
 use Atarek\Jwt\Core\StreamPipeline;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Atarek\Jwt\Core\Contracts\TokenSubject;
 use Atarek\Jwt\Core\Contracts\TokenBuilderDirectorContract;
 
@@ -62,7 +63,8 @@ class JwtHandler
     {
         (new StreamPipeline)->send($request)->through($pipe)->then(function (Token $token) {
             $this->token = $token;
-            auth()->setUserByUserId($token->getClaim('sub'));
+            Auth::guard()->setProvider($token->getClaim('pvr'));
+            auth('api')->setUserByUserId($token->getClaim('sub'));
         });
     }
 

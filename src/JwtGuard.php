@@ -28,6 +28,11 @@ class JwtGuard implements Guard
         return !is_null($this->user());
     }
 
+    public function setProvider($provider)
+    {
+        $config = config("auth.providers.$provider");
+        $this->provider->setModel(config("auth.providers.$provider.model"));
+    }
     /**
      * Determine if the current user is a guest.
      *

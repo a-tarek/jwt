@@ -32,6 +32,7 @@ class JwtServiceProvider extends ServiceProvider
         $this->app->bind(TokenBuilderDirectorContract::class, TokenBuilderDirector::class);
         $this->app->make(AuthController::class);
 
+        $this->app['router']->aliasMiddleware('set.default.provider' , \Atarek\Jwt\Middlewares\SetDefaultProvider::class);
         $this->app['router']->aliasMiddleware('has.access' , \Atarek\Jwt\Middlewares\HasAccessToken::class);
         $this->app['router']->aliasMiddleware('has.refresh' , \Atarek\Jwt\Middlewares\HasRefreshToken::class);
         $this->app['router']->aliasMiddleware('has.token' , \Atarek\Jwt\Middlewares\HasToken::class);
@@ -52,7 +53,7 @@ class JwtServiceProvider extends ServiceProvider
         });
 
         $this->publishes([
-            __DIR__ . '/../config' => base_path('config'),
+            __DIR__ . '/../config/jwt.php' => base_path('config/jwt.php'),
         ]);
     }
 }

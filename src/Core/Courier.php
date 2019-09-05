@@ -103,14 +103,9 @@ class Courier
 
     public static function getSecretFor(string $tokenType): string
     {
-        $env_key = config("jwt.$tokenType.env_secret");
-        if ($env_key === null) {
-            throw new \Exception('env_key not configured');
-        }
-
-        $secret = env($env_key,1234);
+        $secret = config("jwt.$tokenType.env_secret");
         if ($secret === null) {
-            throw new \Exception("$env_key not provided or is null");
+            throw new \Exception('env_key not configured');
         }
 
         if (config("jwt.$tokenType.encode_secret",false)) {
