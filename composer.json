@@ -1,6 +1,6 @@
 {
     "name": "atarek/jwt",
-    "description": "A very simple jwt token based authentication",
+    "description": "Jwt token authentication based on the laravel framework",
     "type": "library",
     "require": {
     },
